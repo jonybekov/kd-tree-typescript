@@ -2,11 +2,11 @@
   "name": "kd-tree-typescript",
   "private": true,
   "version": "0.0.4",
-  "module": "./dist/vite-vanilla-ts-lib-starter.js",
+  "module": "./dist/kd-tree-typescript.js",
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/vite-vanilla-ts-lib-starter.js"
+      "import": "./dist/kd-tree-typescript.js"
     },
     "./dist/": {
       "import": "./dist/"
