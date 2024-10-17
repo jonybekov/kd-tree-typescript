@@ -1,61 +1,102 @@
-# vite-vanilla-ts-lib-starter
+# k-d Tree JavaScript Library
 
-The starter is built on top of Vite 5.x and prepared for writing libraries in TypeScript. It generates a package with support for ESM modules and IIFE.
+A basic but super fast JavaScript implementation of the k-dimensional tree data structure.
 
-## Features
+As of version 1.01, the library is defined as an UMD module (based on https://github.com/umdjs/umd/blob/master/commonjsStrict.js).
 
-- ESM modules
-- IIFE bundle for direct browser support without bundler
-- Typings bundle
-- ESLint - scripts linter
-- Stylelint - styles linter
-- Prettier - formatter
-- Vitest - test framework
-- Husky + lint-staged - pre-commit git hook set up for formatting
+In computer science, a [k-d tree](http://en.wikipedia.org/wiki/K-d_tree) (short for k-dimensional tree) is a space-partitioning data structure for organizing points in a k-dimensional space. k-d trees are a useful data structure for several applications, such as searches involving a multidimensional search key (e.g. range searches and nearest neighbor searches). k-d trees are a special case of binary space partitioning trees.
 
-## GitHub Template
+### Demos
 
-This is a template repo. Click the green [Use this template](https://github.com/kbysiec/vite-vanilla-ts-lib-starter/generate) button to get started.
+- [Spiders](http://ubilabs.github.com/kd-tree-javascript/examples/basic/) - animated multiple nearest neighbour search
+- [Google Map](http://ubilabs.github.com/kd-tree-javascript/examples/map/) - show nearest 20 out of 3000 markers on mouse move
+- [Colors](http://ubilabs.github.com/kd-tree-javascript/examples/colors/) - search color names based on color space distance
+- [Mutable](http://ubilabs.github.com/kd-tree-javascript/examples/mutable/) - dynamically add and remove nodes
 
-## Clone to local
+### Usage
 
-If you prefer to do it manually with the cleaner git history
+#### Using global exports
 
-```bash
-git clone https://github.com/kbysiec/vite-vanilla-ts-lib-starter.git
-cd vite-vanilla-ts-lib-starter
-npm i
+When you include the kd-tree script via HTML, the global variables _kdTree_ and _BinaryHeap_ will be exported.
+
+```js
+// Create a new tree from a list of points, a distance function, and a
+// list of dimensions.
+var tree = new kdTree(points, distance, dimensions);
+
+// Query the nearest *count* neighbours to a point, with an optional
+// maximal search distance.
+// Result is an array with *count* elements.
+// Each element is an array with two components: the searched point and
+// the distance to it.
+tree.nearest(point, count, [maxDistance]);
+
+// Insert a new point into the tree. Must be consistent with previous
+// contents.
+tree.insert(point);
+
+// Remove a point from the tree by reference.
+tree.remove(point);
+
+// Get an approximation of how unbalanced the tree is.
+// The higher this number, the worse query performance will be.
+// It indicates how many times worse it is than the optimal tree.
+// Minimum is 1. Unreliable for small trees.
+tree.balanceFactor();
 ```
 
-## Checklist
+#### Using RequireJS
 
-When you use this template, update the following:
+```js
+requirejs(["path/to/kdTree.js"], function (ubilabs) {
+  // Create a new tree from a list of points, a distance function, and a
+  // list of dimensions.
+  var tree = new ubilabs.kdTree(points, distance, dimensions);
 
-- Remove `.git` directory and run `git init` to clean up the history
-- Change the name in `package.json` - it will be the name of the IIFE bundle global variable and bundle files name (`.cjs`, `.mjs`, `.iife.js`, `d.ts`)
-- Change the author name in `LICENSE`
-- Clean up the `README` and `CHANGELOG` files
+  // Query the nearest *count* neighbours to a point, with an optional
+  // maximal search distance.
+  // Result is an array with *count* elements.
+  // Each element is an array with two components: the searched point and
+  // the distance to it.
+  tree.nearest(point, count, [maxDistance]);
 
-And, enjoy :)
+  // Insert a new point into the tree. Must be consistent with previous
+  // contents.
+  tree.insert(point);
 
-## Usage
+  // Remove a point from the tree by reference.
+  tree.remove(point);
 
-The starter contains the following scripts:
+  // Get an approximation of how unbalanced the tree is.
+  // The higher this number, the worse query performance will be.
+  // It indicates how many times worse it is than the optimal tree.
+  // Minimum is 1. Unreliable for small trees.
+  tree.balanceFactor();
+});
+```
 
-- `dev` - starts dev server
-- `build` - generates the following bundles: ESM (`.js`) and IIFE (`.iife.js`). The name of bundle is automatically taken from `package.json` name property
-- `test` - starts vitest and runs all tests
-- `test:coverage` - starts vitest and run all tests with code coverage report
-- `lint:scripts` - lint `.ts` files with eslint
-- `lint:styles` - lint `.css` and `.scss` files with stylelint
-- `format:scripts` - format `.ts`, `.html` and `.json` files with prettier
-- `format:styles` - format `.cs` and `.scss` files with stylelint
-- `format` - format all with prettier and stylelint
-- `prepare` - script for setting up husky pre-commit hook
-- `uninstall-husky` - script for removing husky from repository
+### Example
 
-## Acknowledgment
+```js
+var points = [
+  { x: 1, y: 2 },
+  { x: 3, y: 4 },
+  { x: 5, y: 6 },
+  { x: 7, y: 8 },
+];
 
-If you found it useful somehow, I would be grateful if you could leave a star in the project's GitHub repository.
+var distance = function (a, b) {
+  return Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2);
+};
 
-Thank you.
+var tree = new kdTree(points, distance, ["x", "y"]);
+
+var nearest = tree.nearest({ x: 5, y: 5 }, 2);
+
+console.log(nearest);
+```
+
+## About
+
+Developed at [Ubilabs](http://ubilabs.net).
+Released under the MIT Licence.
