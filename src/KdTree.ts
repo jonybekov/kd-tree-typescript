@@ -1,3 +1,6 @@
+import { BinaryHeap } from "@/BinaryHeap";
+import { Node } from "@/Node";
+
 export class KdTree<T> {
   private root: Node<T> | null = null;
   private dimensions: string[];
@@ -207,7 +210,7 @@ export class KdTree<T> {
   }
 
   nearest(point: T, maxNodes: number, maxDistance?: number): [T, number][] {
-    const bestNodes = new BinaryHeap<[Node<T>, number]>((e) => -e[1]);
+    const bestNodes = new BinaryHeap<[Node<T>, number]>(e => -e[1]);
 
     const nearestSearch = (node: Node<T>): void => {
       const dimension = this.dimensions[node.dimension];
