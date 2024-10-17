@@ -1,8 +1,8 @@
-# k-d Tree JavaScript Library
+# k-d Tree Typescript Library
 
-A basic but super fast JavaScript implementation of the k-dimensional tree data structure.
+Re-written version of k-dimensional tree data structure in TypeScript
 
-As of version 1.01, the library is defined as an UMD module (based on https://github.com/umdjs/umd/blob/master/commonjsStrict.js).
+This version is bundled as ESM and IIFE. You can just import it in your TS projection
 
 In computer science, a [k-d tree](http://en.wikipedia.org/wiki/K-d_tree) (short for k-dimensional tree) is a space-partitioning data structure for organizing points in a k-dimensional space. k-d trees are a useful data structure for several applications, such as searches involving a multidimensional search key (e.g. range searches and nearest neighbor searches). k-d trees are a special case of binary space partitioning trees.
 
@@ -20,9 +20,10 @@ In computer science, a [k-d tree](http://en.wikipedia.org/wiki/K-d_tree) (short 
 When you include the kd-tree script via HTML, the global variables _kdTree_ and _BinaryHeap_ will be exported.
 
 ```js
+import { KdTree } from "kd-tree";
 // Create a new tree from a list of points, a distance function, and a
 // list of dimensions.
-var tree = new kdTree(points, distance, dimensions);
+var tree = new KdTree(points, distance, dimensions);
 
 // Query the nearest *count* neighbours to a point, with an optional
 // maximal search distance.
@@ -45,39 +46,11 @@ tree.remove(point);
 tree.balanceFactor();
 ```
 
-#### Using RequireJS
-
-```js
-requirejs(["path/to/kdTree.js"], function (ubilabs) {
-  // Create a new tree from a list of points, a distance function, and a
-  // list of dimensions.
-  var tree = new ubilabs.kdTree(points, distance, dimensions);
-
-  // Query the nearest *count* neighbours to a point, with an optional
-  // maximal search distance.
-  // Result is an array with *count* elements.
-  // Each element is an array with two components: the searched point and
-  // the distance to it.
-  tree.nearest(point, count, [maxDistance]);
-
-  // Insert a new point into the tree. Must be consistent with previous
-  // contents.
-  tree.insert(point);
-
-  // Remove a point from the tree by reference.
-  tree.remove(point);
-
-  // Get an approximation of how unbalanced the tree is.
-  // The higher this number, the worse query performance will be.
-  // It indicates how many times worse it is than the optimal tree.
-  // Minimum is 1. Unreliable for small trees.
-  tree.balanceFactor();
-});
-```
-
 ### Example
 
 ```js
+import { KdTree } from "kd-tree";
+
 var points = [
   { x: 1, y: 2 },
   { x: 3, y: 4 },
